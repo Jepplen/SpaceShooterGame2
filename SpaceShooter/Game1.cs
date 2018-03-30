@@ -107,6 +107,7 @@ namespace SpaceShooter
             // Stänger av spelet om man trycker på back-knappen på gamepaden:
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             {
+                var tjoho = 1;
                 this.Exit();
             }
 
