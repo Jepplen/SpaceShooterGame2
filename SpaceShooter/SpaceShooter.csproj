@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{408C9115-CD4E-45F4-A633-D1A3842D71EF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SpaceShooter</RootNamespace>
+    <AssemblyName>SpaceShooter</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Background.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="GameElements.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="PowerUp.cs" />
+    <Compile Include="PrintText.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.manifest" />
+    <None Include="Content\images\background\background.xnb" />
+    <None Include="Content\images\background\backgroundspace.xnb" />
+    <None Include="Content\images\background\backgroundspace_jeppel_small.xnb" />
+    <None Include="Content\images\enemies\boss_jarjar.xnb" />
+    <None Include="Content\images\enemies\crashsprite.xnb" />
+    <None Include="Content\images\enemies\mine.xnb" />
+    <None Include="Content\images\enemies\minemika.xnb" />
+    <None Include="Content\images\enemies\tripod.xnb" />
+    <None Include="Content\images\enemies\tripodgreen.xnb" />
+    <None Include="Content\images\enemies\tripodred.xnb" />
+    <None Include="Content\images\menu.xnb" />
+    <None Include="Content\images\menu\exit.xnb" />
+    <None Include="Content\images\menu\highscore.xnb" />
+    <None Include="Content\images\menu\menubackground.xnb" />
+    <None Include="Content\images\menu\menubackgroundtransparent.xnb" />
+    <None Include="Content\images\menu\menubackgroundwhite.xnb" />
+    <None Include="Content\images\menu\menuexit.xnb" />
+    <None Include="Content\images\menu\menuhighscore.xnb" />
+    <None Include="Content\images\menu\menustart.xnb" />
+    <None Include="Content\images\menu\start.xnb" />
+    <None Include="Content\images\player\bullet.xnb" />
+    <None Include="Content\images\player\bulletmika.xnb" />
+    <None Include="Content\images\player\powerup_weapon_laser.xnb" />
+    <None Include="Content\images\player\shipmika2.xnb" />
+    <None Include="Content\images\player\shipmika3.xnb" />
+    <None Include="Content\images\powerups\coin.xnb" />
+    <None Include="Content\images\powerups\coinmika.xnb" />
+    <None Include="Content\spriteFonts\gameText.xnb" />
+    <None Include="Content\images\player\ship.xnb" />
+    <None Include="Content\images\player\mikaShip.xnb" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
