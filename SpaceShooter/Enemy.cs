@@ -114,7 +114,7 @@ namespace SpaceShooter
         // ===========================================================
         // EnemyTripodGreen(), konstruktor för att skapa objektet
         // ===========================================================
-        public EnemyTripodGreen(Texture2D texture, float X, float Y, GameTime gameTime) : base(texture, X, Y, 0f, 3f)
+        public EnemyTripodGreen(Texture2D texture, float X, float Y, GameTime gameTime) : base(texture, X, Y, 0f, 4f)
         {
             timeForTripodGreenToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;
 
@@ -123,17 +123,17 @@ namespace SpaceShooter
         // ===========================================================
         // Update(), kontrollerar om Tripod:en ska få leva vidare
         // ===========================================================
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, GameWindow window)
         {
 
             // Flytta på fienden:
             vector.Y += speed.Y;
 
             //// Gör fienden inaktiv om den åker ut nedanför skärmen
-            //if (vector.Y > window.ClientBounds.Height)
-            //{
-            //    isAlive = false;
-            //}
+            if (vector.Y > window.ClientBounds.Height)
+            {
+                isAlive = false;
+            }
             // Döda Tripoden:en om det är för gammalt
             if (timeForTripodGreenToDie < gameTime.TotalGameTime.TotalMilliseconds)
             {
@@ -169,17 +169,17 @@ namespace SpaceShooter
         // ===========================================================
         // Update(), kontrollerar om Tripod:en ska få leva vidare
         // ===========================================================
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, GameWindow window)
         {
 
             // Flytta på fienden:
             vector.Y += speed.Y;
 
             //// Gör fienden inaktiv om den åker ut nedanför skärmen
-            //if (vector.Y > window.ClientBounds.Height)
-            //{
-            //    isAlive = false;
-            //}
+            if (vector.Y > window.ClientBounds.Height)
+            {
+                isAlive = false;
+            }
             // Döda Tripoden:en om det är för gammalt
             if (timeForTripodRedToDie < gameTime.TotalGameTime.TotalMilliseconds)
             {
@@ -215,20 +215,41 @@ namespace SpaceShooter
             // Flytta på fienden:
             vector.Y += speed.Y;
             vector.X += speed.X;
+           
 
+          
 
             // Kontrollera så den inte åker utanför fönstret på sidorna
-            if (vector.X > window.ClientBounds.Width - texture.Width - 10 || vector.X < 10)
+            if (vector.X > window.ClientBounds.Width - texture.Width -10)
+            {       
+                // check that speed always is minus                
+                speed.X *= -1; // Byt riktning på fienden i X-led
+                speed.X += speed.Y;
+
+                if (speed.X == -5)
+                {                    
+                }
+                else
+                {
+                    speed.X = -5;
+                }
+            }
+
+            else if (vector.X < 10)
             {
                 speed.X *= -1; // Byt riktning på fienden i X-led
                 speed.X += speed.Y;
+
+                if (speed.X == 5)
+                {
+                }
+                else
+                {
+                    speed.X = 5;
+                }
             }
 
-            //// Gör fienden inaktiv om den åker ut nedanför skärmen
-            //if (vector.Y > window.ClientBounds.Height)
-            //{
-            //    isAlive = false;
-            //}
+         
             // Döda Tripoden:en om det är för gammalt
             if (timeForMineToDie < gameTime.TotalGameTime.TotalMilliseconds)
             {
@@ -240,18 +261,17 @@ namespace SpaceShooter
 
     class EnemyBossJarJar : PhysicalObject
     {
-        double timeForJarJarToDie; // Hur länge Tripod lever kvar i spelet
+        
 
         // ===========================================================
-        // TripodEnemy(), konstruktor för att skapa objektet
+        //EnemyBossJarJar(), konstruktor för att skapa objektet
         // ===========================================================
         public EnemyBossJarJar(Texture2D texture, float X, float Y, GameTime gameTime, GameWindow window) : base(texture, X, Y, 3f, 1f)
-        {
-            timeForJarJarToDie = gameTime.TotalGameTime.TotalMilliseconds + 30000;
+        {           
         }
 
         // ===========================================================
-        // Update(), kontrollerar om Tripod:en ska få leva vidare
+        // Update(), kontrollerar om bossen:en ska få leva vidare
         // ===========================================================
         public void Update(GameTime gameTime, GameWindow window)
         {
@@ -262,68 +282,91 @@ namespace SpaceShooter
 
 
             // Kontrollera så den inte åker utanför fönstret på sidorna
-            if (vector.X > window.ClientBounds.Width - texture.Width - 10 || vector.X < 10)
+            if (vector.X > window.ClientBounds.Width - texture.Width - 10)
             {
                 speed.X *= -1; // Byt riktning på fienden i X-led
                 speed.X += speed.Y;
+                if (speed.X == -3)
+                {
+                }
+                else
+                {
+                    speed.X = -3;
+                }
             }
 
+            if (vector.X < 10)
+            {
+                if (speed.X == 3)
+                {
+                }
+                else
+                {
+                    speed.X = 3;
+                }
+            }
+
+
             // Kontrollera så den inte åker utanför fönstret på uppe och nere
-            if (vector.Y > window.ClientBounds.Height - texture.Height - 10 || vector.Y < 10)
+            if (vector.Y > window.ClientBounds.Height - texture.Height - 10)
             {
                 speed.Y *= -1; // Byt riktning på fienden i X-led
                 speed.Y += speed.X;
-            }
 
-            //// Gör fienden inaktiv om den åker ut nedanför skärmen
-            //if (vector.Y > window.ClientBounds.Height)
-            //{
-            //    isAlive = false;
-            //}
-            // Döda Tripoden:en om det är för gammalt
-            if (timeForJarJarToDie < gameTime.TotalGameTime.TotalMilliseconds)
-            {
-                isAlive = false;
+                if (speed.Y == -1)
+                {
+                }
+                else
+                {
+                    speed.Y = -1;
+                }
             }
+            if (vector.Y < 10)
+            {
+                if (speed.Y == 1)
+                {
+                }
+                else
+                {
+                    speed.Y = 1;
+                }
+            } 
+
+            //if (gameTime.TotalGameTime.TotalMilliseconds > GameElements.spawnTimeReference + 145000 && gameTime.TotalGameTime.TotalMilliseconds < GameElements.spawnTimeReference + 160000)
+            //{
+            //    if (vector.X > window.ClientBounds.Width / 2)
+            //    {
+            //        speed.X = -1;
+            //    }
+            //    else if (vector.X < window.ClientBounds.Width / 2)
+            //    {
+            //        speed.X = 1;
+            //    }
+
+            //    if (vector.Y > window.ClientBounds.Height / 2)
+            //    {
+            //        speed.Y = -1;
+            //    }
+            //    else if (vector.Y < window.ClientBounds.Height / 2)
+            //    {
+            //        speed.Y = 1;
+            //    }
+
+            //    if (vector.X == 399 || vector.X == 400 || vector.X == 401)
+            //    {
+            //        speed.X = 0;
+            //    }
+
+            //    if (vector.Y == 239 || vector.Y == 240 || vector.Y == 241)
+            //    {
+            //        speed.Y = 0;
+            //    }
+            //}
+            
+                
+            
+
         }
     }
-
-
-
-
-
-    //// ===================================================================================
-    //// Egenskaper för Enemy
-    //// ===================================================================================
-    //public bool IsAlive
-    //{
-    //    get { return isAlive; }
-    //    set { isAlive = value; }
-    //}
-
-
-    //{
-
-    //        // Flytta på fienden:
-    //        vector.X += speed.X;
-
-    //        // Kontrollera så fienden inte åker utanför fönstret på sidorna
-    //        if (vector.X > window.ClientBounds.Width - texture.Width || vector.X < 0)
-    //        {
-    //            speed.X *= -1; // Byt riktning på fienden
-
-    //            vector.Y += speed.Y;
-    //        }
-
-    //        // Gör fienden inaktiv om den åker ut där nere
-    //        if (vector.Y > window.ClientBounds.Height)
-    //        {
-    //            isAlive = false;
-    //        }
-
-
-    //    }
-
-
 }
 

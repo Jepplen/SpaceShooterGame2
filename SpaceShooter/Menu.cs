@@ -86,46 +86,11 @@ namespace SpaceShooter
             // Läs in tangenttryckningar:
             KeyboardState keyboardState = Keyboard.GetState();
 
-
-
-
-
-            //KeyboardState keyboardState = Keyboard.GetState();
-
-            //readyToSelectDown = !keyboardState.IsKeyDown(Keys.Down);
-            //readyToSelectUp = !keyboardState.IsKeyDown(Keys.Up);
-
-
-            //if (keyboardState.IsKeyDown(Keys.Down) && readyToSelectDown)
-            //{
-            //    selected++;
-            //    // Om vi har gått utanför de möjliga valen, så vill vi att det sista menyvalet ska väljas:
-            //    if (selected > 2)
-            //    {
-            //        selected = 2; // Det sista menyvalet
-            //    }
-
-            //}
-            //else if (keyboardState.IsKeyDown(Keys.Up) && readyToSelectUp)
-            //{
-            //    selected--;
-            //    // Om vi har gått utanför de möjliga valen (alltså negativa siffror), så vill vi att det första menyvalet ska väljas:
-            //    if (selected < 0)
-            //    {
-            //        selected = 0; // Det första menyvalet
-            //    }
-
-            //}
-
-
-
-
-
             // Byte mellan olika menyval.
             // Först måste vi dock kontrollera så användaren inte precis nyligen bytte menyval.
             // Vi vill ju inte att det ska ändras 30 eller 60 gånger per sekund!
             // Därför pausar vi i 130 millisekunder:
-            if (lastChange + 100 < gameTime.TotalGameTime.TotalMilliseconds)
+            if (lastChange + 150 < gameTime.TotalGameTime.TotalMilliseconds)
             {
                 // Gå ett steg ned i menyn
                 if (keyboardState.IsKeyDown(Keys.Down))
@@ -181,13 +146,7 @@ namespace SpaceShooter
                 }
             }
         }
-
-
-
-
-
-
-
+        
 
         // ====================================================================================
         // MenuItem, container-klass för ett menyval

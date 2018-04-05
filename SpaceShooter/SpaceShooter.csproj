@@ -52,6 +52,7 @@
     <Compile Include="PrintText.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -66,36 +67,21 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
-    <None Include="Content\images\background\background.xnb" />
-    <None Include="Content\images\background\backgroundspace.xnb" />
     <None Include="Content\images\background\backgroundspace_jeppel_small.xnb" />
     <None Include="Content\images\enemies\boss_jarjar.xnb" />
     <None Include="Content\images\enemies\crashsprite.xnb" />
-    <None Include="Content\images\enemies\mine.xnb" />
     <None Include="Content\images\enemies\minemika.xnb" />
-    <None Include="Content\images\enemies\tripod.xnb" />
     <None Include="Content\images\enemies\tripodgreen.xnb" />
     <None Include="Content\images\enemies\tripodred.xnb" />
-    <None Include="Content\images\menu.xnb" />
-    <None Include="Content\images\menu\exit.xnb" />
-    <None Include="Content\images\menu\highscore.xnb" />
-    <None Include="Content\images\menu\menubackground.xnb" />
     <None Include="Content\images\menu\menubackgroundtransparent.xnb" />
-    <None Include="Content\images\menu\menubackgroundwhite.xnb" />
     <None Include="Content\images\menu\menuexit.xnb" />
     <None Include="Content\images\menu\menuhighscore.xnb" />
     <None Include="Content\images\menu\menustart.xnb" />
-    <None Include="Content\images\menu\start.xnb" />
-    <None Include="Content\images\player\bullet.xnb" />
-    <None Include="Content\images\player\bulletmika.xnb" />
+    <None Include="Content\images\player\bulletmika2.xnb" />
     <None Include="Content\images\player\powerup_weapon_laser.xnb" />
-    <None Include="Content\images\player\shipmika2.xnb" />
     <None Include="Content\images\player\shipmika3.xnb" />
-    <None Include="Content\images\powerups\coin.xnb" />
     <None Include="Content\images\powerups\coinmika.xnb" />
     <None Include="Content\spriteFonts\gameText.xnb" />
-    <None Include="Content\images\player\ship.xnb" />
-    <None Include="Content\images\player\mikaShip.xnb" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

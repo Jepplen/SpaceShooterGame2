@@ -23,10 +23,10 @@ namespace SpaceShooter
         
         static Menu menu;
 
-        //static Texture2D menuSprite;
-        //static Vector2 menuPosition;
-        static Player player;
-        //static List<Enemy> enemies;
+        public static bool gameCanStart = true;
+
+       
+        static Player player;      
         static List<GoldCoin> goldCoins;
         static Texture2D goldCoinSprite;
         static PrintText printText;
@@ -111,22 +111,9 @@ namespace SpaceShooter
             
 
             // Skapar spelarobjekt
-            player = new Player(content.Load<Texture2D>("images/player/shipmika3"), 380, 400, 2.5f, -4.5f, content.Load<Texture2D>("images/player/bulletmika"));
+            player = new Player(content.Load<Texture2D>("images/player/shipmika3"), 380, 400, 2.5f, -4.5f, content.Load<Texture2D>("images/player/bulletmika2"));
 
 
-            // Skapa fiender
-            //enemies = new List<Enemy>();
-
-            //GenerateEnemies(window, content);
-
-
-
-
-            // Denna kräver att vi skapar ett objektet enemy.... alltså Enemy enemy;
-            //enemy = new Enemy(Content.Load<Texture2D>("images/enemies/mine"), 0, 0);
-
-            //// Laddar enemy Tripod sprite
-            //tripodSprite = content.Load<Texture2D>("images/enemies/tripod");
 
 
             // Laddar powerUpWeaponLaserSprite
@@ -199,129 +186,21 @@ namespace SpaceShooter
             // Stänger av spelet om man trycker på back-knappen på gamepaden
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
+            
+
+            if (gameCanStart == true)
+            {
+                spawnTimeReference = gameTime.TotalGameTime.TotalMilliseconds;
+                gameCanStart = false;
+            }
 
             background.Update(window);
             
             // Anropar i update
-            player.Update(window, gameTime);
-
-            //// Gå igenom alla fiender
-            //foreach (Enemy e in enemies.ToList())
-            //{
-            //    foreach (Bullet b in player.Bullets)
-            //    {
-            //        if (e.CheckCollision(b)) // Kollision uppstod
-            //        {
-            //            e.IsAlive = false; // Döda fiende
-
-            //            player.Points++; // Ge spelaren poäng
-            //        }
-
-            //    }
-
-
-            //    if (e.IsAlive) // Kontrollera om fienden lever
-            //    {
-
-            //        // Kontrollera kollision med spelaren:
-            //        if (e.CheckCollision(player))
-            //        {
-            //            player.IsAlive = false;
-
-            //        }
-            //        e.Update(window); // Flytta på dem
-            //    }
-            //    else // Ta bort fienden för den är död
-            //    {
-            //        enemies.Remove(e);
-            //    }
-            //}
-
-
-            //// Guldmynten ska uppstå slumpmässigt, en chans på 200:
-            //Random random = new Random();
-            //int newCoin = random.Next(1, 200);
-
-            //if (newCoin == 1) // Ok, nytt guldmynt ska uppstå
-            //{
-            //    // Var ska guldmyntet uppstå:
-            //    int rndX = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
-            //    int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
-
-            //    // Lägg till guldmyntet i listan GoldCoins
-            //    goldCoins.Add(new GoldCoin(goldCoinSprite, rndX, rndY, gameTime));
-            //}
-
-
-            //// Gå igenom hela listan med existerande guldmynt
-            //foreach (GoldCoin gc in goldCoins.ToList())
-            //{
-            //    if (gc.IsAlive) // Kontrollera om guldmyntet lever
-            //    {
-            //        // gd.Update(), kollar om guldmyntet har blivit för gammalt för att få leva vidare:
-            //        gc.Update(gameTime);
-
-            //        // Kontrollera om guldmyntet har kolliderat med spelaren:
-            //        if (gc.CheckCollision(player))
-            //        {
-            //            // Ta bort myntet vid kollision:
-            //            goldCoins.Remove(gc);
-            //            player.Points++; // ... och ge spelaren poäng
-            //        }
-            //    }
-
-            //    else // Ta bort guldmyntet för det är dött
-            //    {
-            //        goldCoins.Remove(gc);
-            //    }
-            //}
-
-
-            // =======================================================================================================================
-            // Tripods ska uppstå slumpmässigt, en chans på 50:
-            ////Random random = new Random(); // Finns redan för guldmynt
-
-
-            //if (gameTime.TotalGameTime.TotalMilliseconds > 5000 && gameTime.TotalGameTime.TotalMilliseconds < 10000)
-            //{
-            //    int newTripod = random.Next(1, 10);
-
-            //    if (newTripod == 1) // Ok, nytt tripod ska uppstå
-            //    {
-            //        // Var ska tripoden uppstå:
-            //        int rndX = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
-            //        //int Y = 0 - tripodSprite.Height;
-            //        int posY = 0 - tripodSprite.Height;
-
-            //        // Lägg till tripod:en i listan tripodList
-            //        tripodList.Add(new TripodEnemy(tripodSprite, rndX, posY, gameTime));
-            //    }
-            //}
-
-
-            //else if (gameTime.TotalGameTime.TotalMilliseconds > 10000 && gameTime.TotalGameTime.TotalMilliseconds < 15000)
-            //{
-            //    int newTripod = random.Next(1, 10);
-
-            //    if (newTripod == 1) // Ok, ny tripod ska uppstå
-            //    {
-            //        // Var ska tripod:en uppstå:
-            //        int rndX = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
-            //        //int Y = 0 - tripodSprite.Height;
-            //        int posY = 0 - tripodSprite.Height;
-
-            //        // Lägg till tripod:en i listan tripodList
-            //        tripodList.Add(new TripodEnemy(tripodSprite, rndX, posY, gameTime));
-            //    }
-
-
-
-            //}
-
-
-
+            player.Update(window, gameTime);        
             
-
+            
+            // Tillägg av fiender
             GenerateTripodsGreen(window, content, gameTime, 50, 9000, 17000);
             GenerateGoldCoins(window, content, gameTime, 400, 15000, 20000);
             GenerateTripodsGreen(window, content, gameTime, 45, 19000, 23000);
@@ -352,8 +231,10 @@ namespace SpaceShooter
 
             if (!player.IsAlive) // Spelaren är död
             {
+                gameCanStart = true;
                 Reset(window, content, gameTime); // Återställ alla spelobjekt
                 return State.Menu; // Återgå till menyn
+                
             }
 
             return State.Run; // Stanna kvar i Run
@@ -376,11 +257,7 @@ namespace SpaceShooter
                    
             player.Draw(spriteBatch);
 
-            //foreach (Enemy e in enemies)
-            //{
-            //    e.Draw(spriteBatch);
-            //}
-            
+                   
             // Visa hur mycket poäng spelaren har
             foreach (GoldCoin gc in goldCoins)
             {
@@ -443,8 +320,14 @@ namespace SpaceShooter
             }
 
 
+            // Laser Upgrade text
+            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + 62000 && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + 64500)
+            {
+                printText.Print("That looks like a laser upgrade!", spriteBatch, 300, 200);
+            }
+
             // Swarm!
-            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + 65000 && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + 68000)
+            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + 66000 && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + 68000)
             {
                 printText.Print("Watch out! They're coming!", spriteBatch, 300, 200);
             }
@@ -558,10 +441,9 @@ namespace SpaceShooter
         // =========================================================================================================================
         public static void Reset(GameWindow window, ContentManager content, GameTime gameTime)
         {
-            player.Reset(380, 400, 2.5f, -4.5f);
+            player.Reset(380, 400, 2.5f, -4.5f); // Reset player position på skärmen
 
-            // Skapa fiender
-            //enemies.Clear();
+           // Tömmer samtliga listor
             crashAnimationList.Clear();
             tripodRedList.Clear();
             tripodGreenList.Clear();
@@ -569,62 +451,14 @@ namespace SpaceShooter
             mineList.Clear();
             powerUpList.Clear();
 
-            //GenerateEnemies(window, content);
-            spawnTimeReference = gameTime.TotalGameTime.TotalMilliseconds;
+            
 
         }
 
 
-        //// ===============================================================================================
-        //// GenerateEnemies(), metod som genererar fiender
-        //// ===============================================================================================
-
-        //public static void GenerateEnemies(GameWindow window, ContentManager content)
-        //{
-
-        //    // Minor
-        //    int numberOfMines = 5;
-        //    Texture2D tmpSprite = content.Load<Texture2D>("images/enemies/minemika");
-        //    for (int i = 0; i < numberOfMines; i++)
-        //    {
-        //        int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-        //        int rndY = random.Next(0, window.ClientBounds.Height / 2);
-        //        Mine temp = new Mine(tmpSprite, rndX, rndY);
-        //        enemies.Add(temp); // Lägg till fienden i listan enemies (Har klassen Enemy)
-        //    }
-
-        //    // Tripods
-        //    int numberOfTripods = 3;
-        //    tmpSprite = content.Load<Texture2D>("images/enemies/tripod");
-        //    for (int i = 0; i < numberOfTripods; i++)
-        //    {
-        //        int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
-        //        int rndY = random.Next(0, window.ClientBounds.Height / 2);
-        //        Tripod temp = new Tripod(tmpSprite, rndX, rndY);
-        //        enemies.Add(temp); // Lägg till fienden i listan enemies (Har klassen Enemy)
-
-        //    }
-        //}
+        
 
 
-        public static void GenerateCrashSprite(GameWindow window, ContentManager content, GameTime gameTime, int existanceFromMilliseconds, int existanceToMilliseconds)
-        {
-
-            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + existanceFromMilliseconds && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + existanceToMilliseconds)
-            {
-                int newCrashSite = 1;
-
-                if (newCrashSite == 1) // Ok, ny krasch ska uppstå
-                {
-                    // Var ska tripoden uppstå:
-                    int rndX = random.Next(0, window.ClientBounds.Width - crashSprite.Width);
-                    int posY = 0 - crashSprite.Height;
-
-                    // Lägg till tripod:en i listan tripodList
-                    crashAnimationList.Add(new CrashAnimation(crashSprite, rndX, posY, gameTime));
-                }
-            }
-        }
 
         public static void GenerateTripodsGreen(GameWindow window, ContentManager content, GameTime gameTime, int chanceToSpawn, int existanceFromMilliseconds, int existanceToMilliseconds)
         {
@@ -694,10 +528,10 @@ namespace SpaceShooter
                 if (newBossJarJar == true) // Ok, bossen ska spawna
                 {
                     // Var ska bossen uppstå:
-                    int rndX = 240; // random.Next(0, window.ClientBounds.Width - enemyBossSpriteJarJar.Width)
+                    int rndX = random.Next(0, window.ClientBounds.Width - enemyBossSpriteJarJar.Width);
                     int posY = 0 - enemyBossSpriteJarJar.Height;
 
-                    // Lägg till tripod:en i listan tripodList
+                   
                     enemyBossList.Add(new EnemyBossJarJar(enemyBossSpriteJarJar, rndX, posY, gameTime, window));
 
                     newBossJarJar = false;
@@ -713,13 +547,13 @@ namespace SpaceShooter
             {
 
 
-                if (newPowerUpWeaponLaser == true) // Ok, bossen ska spawna
+                if (newPowerUpWeaponLaser == true) // Ok, vapenuppgraderingen ska spawna
                 {
-                    // Var ska bossen uppstå:
+                    // Var ska den uppstå:
                     int posX = 390;
-                    int posY = 0 - enemyBossSpriteJarJar.Height;
+                    int posY = 0 - powerUpWeaponLaserSprite.Height;
 
-                    // Lägg till tripod:en i listan tripodList
+                    // Lägg till den i listan
                     powerUpList.Add(new PowerUpWeaponLaser(powerUpWeaponLaserSprite, posX, posY, gameTime, window));
 
                     newPowerUpWeaponLaser = false;
@@ -758,7 +592,7 @@ namespace SpaceShooter
                 }
             }
 
-
+            
 
             // Gå igenom hela listan med existerande EnemyBossJarJar
             foreach (EnemyBossJarJar ebjj in enemyBossList.ToList())
@@ -794,7 +628,7 @@ namespace SpaceShooter
 
                             b.IsAlive = false;
 
-                            if (ebjj.IsDamaged > 10) // Kollision uppstod
+                            if (ebjj.IsDamaged > 20) // Kollision uppstod
                             {
                                 ebjj.IsAlive = false; // Döda fiende
 
@@ -809,11 +643,11 @@ namespace SpaceShooter
                             }
                         }
 
-                        if (ebjj.IsDestroyed == true && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 50)
+                        if (ebjj.IsDestroyed == true && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 200)
                         {
-                            int newCrashSite = 1;
+                            bool newCrashSite = true;
 
-                            if (newCrashSite == 1) // Ok, ny krasch ska uppstå
+                            if (newCrashSite == true) // Ok, ny krasch ska uppstå
                             {
                                 // Var ska den uppstå
                                 float posX = ebjj.X;
@@ -826,16 +660,18 @@ namespace SpaceShooter
 
                         }
 
-                        // Gå igenom hela listan med existerande guldmynt
+                   
+
+
                         foreach (CrashAnimation ca in crashAnimationList.ToList())
                         {
-                            if (ca.IsAlive) // Kontrollera om guldmyntet lever
+                            if (ca.IsAlive) 
                             {
-                                // gd.Update(), kollar om guldmyntet har blivit för gammalt för att få leva vidare:
+                                
                                 ca.Update(gameTime);
                             }
 
-                            else // Ta bort guldmyntet för det är dött
+                            else 
                             {
                                 crashAnimationList.Remove(ca);
                             }
@@ -845,19 +681,22 @@ namespace SpaceShooter
 
                     }
 
-                }
+            }
 
 
 
+            if (gameTime.TotalGameTime.TotalMilliseconds > deathSpriteTimereference + 250)
+            {
+                crashAnimationList.Clear();
+            }
 
-
-                // Gå igenom hela listan med existerande TripodEnemy
-                foreach (EnemyTripodGreen etg in tripodGreenList.ToList())
+            // Gå igenom hela listan med existerande TripodEnemy
+            foreach (EnemyTripodGreen etg in tripodGreenList.ToList())
             {
                 if (etg.IsAlive) // Kontrollera om fienden lever
                 {
                     // gd.Update(), kollar om fienden har blivit för gammalt för att få leva vidare:
-                    etg.Update(gameTime);
+                    etg.Update(gameTime, window);
 
                     // Kontrollera om fienden har kolliderat med spelaren:
                     if (etg.CheckCollision(player))
@@ -898,9 +737,9 @@ namespace SpaceShooter
 
                     if (etg.IsDestroyed == true && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 50)
                     {
-                        int newCrashSite = 1;
+                        bool newCrashSite = true;
 
-                        if (newCrashSite == 1) // Ok, ny krasch ska uppstå
+                        if (newCrashSite == true) // Ok, ny krasch ska uppstå
                         {
                             // Var ska den uppstå
                             float posX = etg.X;
@@ -913,16 +752,16 @@ namespace SpaceShooter
 
                     }
 
-                    // Gå igenom hela listan med existerande guldmynt
+                    
                     foreach (CrashAnimation ca in crashAnimationList.ToList())
                     {
-                        if (ca.IsAlive) // Kontrollera om guldmyntet lever
+                        if (ca.IsAlive)
                         {
-                            // gd.Update(), kollar om guldmyntet har blivit för gammalt för att få leva vidare:
+                            
                             ca.Update(gameTime);
                         }
 
-                        else // Ta bort guldmyntet för det är dött
+                        else
                         {
                             crashAnimationList.Remove(ca);
                         }
@@ -935,13 +774,13 @@ namespace SpaceShooter
             }
 
 
-            // Gå igenom hela listan med existerande TripodEnemy
+            // Gå igenom hela listan med existerande TripodEnemyRed
             foreach (EnemyTripodRed etr in tripodRedList.ToList())
             {
                 if (etr.IsAlive) // Kontrollera om fienden lever
                 {
                     // gd.Update(), kollar om fienden har blivit för gammalt för att få leva vidare:
-                    etr.Update(gameTime);
+                    etr.Update(gameTime, window);
 
                     // Kontrollera om fienden har kolliderat med spelaren:
                     if (etr.CheckCollision(player))
@@ -982,9 +821,9 @@ namespace SpaceShooter
 
                     if (etr.IsDestroyed == true && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 50)
                     {
-                        int newCrashSite = 1;
+                        bool newCrashSite = true;
 
-                        if (newCrashSite == 1) // Ok, ny krasch ska uppstå
+                        if (newCrashSite == true) // Ok, ny krasch ska uppstå
                         {
                             // Var ska den uppstå
                             float posX = etr.X;
@@ -997,16 +836,16 @@ namespace SpaceShooter
 
                     }
 
-                    // Gå igenom hela listan med existerande guldmynt
+                    
                     foreach (CrashAnimation ca in crashAnimationList.ToList())
                     {
-                        if (ca.IsAlive) // Kontrollera om guldmyntet lever
+                        if (ca.IsAlive) // Kontrollera om Crashspriten lever
                         {
-                            // gd.Update(), kollar om guldmyntet har blivit för gammalt för att få leva vidare:
+                            // ca.Update(), kollar om crashspriten har blivit för gammalt för att få leva vidare:
                             ca.Update(gameTime);                          
                         }
 
-                        else // Ta bort guldmyntet för det är dött
+                        else // Ta bort crashspriten för det är dött
                         {
                             crashAnimationList.Remove(ca);
                         }
@@ -1019,12 +858,12 @@ namespace SpaceShooter
             }
 
 
-            // Gå igenom hela listan med existerande TripodEnemy
+           
             foreach (MineEnemy me in mineList.ToList())
             {
-                if (me.IsAlive) // Kontrollera om fienden lever
+                if (me.IsAlive) 
                 {
-                    // gd.Update(), kollar om fienden har blivit för gammalt för att få leva vidare:
+                    
                     me.Update(gameTime, window);
 
                     // Kontrollera om fienden har kolliderat med spelaren:
@@ -1066,9 +905,9 @@ namespace SpaceShooter
 
                     if (me.IsDestroyed == true && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 50)
                     {
-                        int newCrashSite = 1;
+                        bool newCrashSite = true;
 
-                        if (newCrashSite == 1) // Ok, ny krasch ska uppstå
+                        if (newCrashSite == true) // Ok, ny krasch ska uppstå
                         {
                             // Var ska den uppstå
                             float posX = me.X;
@@ -1081,16 +920,16 @@ namespace SpaceShooter
 
                     }
 
-                    // Gå igenom hela listan med existerande guldmynt
+                  
                     foreach (CrashAnimation ca in crashAnimationList.ToList())
                     {
-                        if (ca.IsAlive) // Kontrollera om guldmyntet lever
+                        if (ca.IsAlive)
                         {
-                            // gd.Update(), kollar om guldmyntet har blivit för gammalt för att få leva vidare:
+                            
                             ca.Update(gameTime);
                         }
 
-                        else // Ta bort guldmyntet för det är dött
+                        else
                         {
                             crashAnimationList.Remove(ca);
                         }
@@ -1116,7 +955,7 @@ namespace SpaceShooter
                     {
                         // Ta bort myntet vid kollision:
                         goldCoins.Remove(gc);
-                        player.Points++; // ... och ge spelaren poäng
+                        player.Points = player.Points + Settings.PlayerPointsGoldCoin; // ... och ge spelaren poäng
                     }
                 }
 

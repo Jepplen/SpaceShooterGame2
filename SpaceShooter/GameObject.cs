@@ -113,22 +113,4 @@ namespace SpaceShooter
 
     }
 
-  
-
-
-    //class Player : MovingObject
-    //{
-    //    int points = 0;
-    //}
-
-    //// ===============================================================================================================
-    //// Player, klass för att skapa ett spelarobjekt.
-    //// Klassen ska hantera rymdskepp (sprite) och ta emot tangentbordstryckningar för att ändra rymdskeppets position
-    //// ===============================================================================================================
-    //class Player : MovingObject
-    //{
-    //    int points = 0;
-    //}
-
-
 }
