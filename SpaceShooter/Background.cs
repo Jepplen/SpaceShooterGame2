@@ -31,14 +31,9 @@ namespace SpaceShooter
         public void Update(GameWindow window, int nrBackgroundsY)
         {
 
-            if (GameElements.player.EscapeIsPressed) // Spelaren har tryckt Escape in-game
-            {
-                vector.Y += 0; // Flytta bakgrunden
-            }
-            else
-            {
+          
                 vector.Y += 2f; // Flytta bakgrunden
-            }
+            
             // Kontrollera om bakgrunden har åkt ut i nedkant:
             if (vector.Y > window.ClientBounds.Height)
             {

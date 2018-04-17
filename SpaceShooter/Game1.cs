@@ -93,41 +93,69 @@ namespace SpaceShooter
         protected override void Update(GameTime gameTime)
         {
 
-            // Stänger av spelet om man trycker på back-knappen på gamepaden:
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+
+
+
+            //// Stänger av spelet om man trycker på back-knappen på gamepaden:
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            //{
+            //    GameElements.gameCanStart = true;
+            //    this.Exit();
+
+            //}
+
+
+
+            if (GameElements.player.EscapeIsPressed) // Spelaren har tryckt Escape in-game
             {
-                GameElements.gameCanStart = true;
-                this.Exit();
 
-            }
+                KeyboardState keyboardState = Keyboard.GetState();
 
-
-            switch (GameElements.currentState)
-            {
-                case GameElements.State.Run: // Kör själva spelet                    
+                if (keyboardState.IsKeyDown(Keys.Y))
+                {
                     GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
-                    break;
+                }
+                else if (keyboardState.IsKeyDown(Keys.N))
+                {
+                    GameElements.player.EscapeIsPressed = false;
+                }
 
-                case GameElements.State.HighScore: // Visa HighScore-listan
-                    GameElements.currentState = GameElements.HighScoreUpdate();
-                    break;
-
-                case GameElements.State.Quit: // Avsluta spelet
-                    this.Exit();
-                    break;
-
-                case GameElements.State.OnlySprite: // Null-case till menybakgrunden, går ej att välja
-                    break;
-
-                default: // Tillbaka till menyn                   
-                    GameElements.currentState = GameElements.MenuUpdate(gameTime);
-                    break;
             }
 
 
-            base.Update(gameTime);
 
-            // Ligger numera i GameElements.cs
+            if (!GameElements.player.EscapeIsPressed)
+            {
+                switch (GameElements.currentState)
+                {
+                    case GameElements.State.Run: // Kör själva spelet                    
+                        GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
+                        break;
+
+                    case GameElements.State.HighScore: // Visa HighScore-listan
+                        GameElements.currentState = GameElements.HighScoreUpdate();
+                        break;
+
+                    case GameElements.State.Quit: // Avsluta spelet
+                        this.Exit();
+                        break;
+
+                    case GameElements.State.OnlySprite: // Null-case till menybakgrunden, går ej att välja
+                        break;
+
+                    default: // Tillbaka till menyn                   
+                        GameElements.currentState = GameElements.MenuUpdate(gameTime);
+                        break;
+                }
+
+
+                base.Update(gameTime);
+
+                // Ligger numera i GameElements.cs
+            }
+
+
+
 
         }
 
@@ -141,39 +169,58 @@ namespace SpaceShooter
         // ===============================================================================================
         protected override void Draw(GameTime gameTime)
         {
-            
-            // Rensa skärmen
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+          
 
             // Använd spriteBatch för att rita ut saker på skärmen
             spriteBatch.Begin();
 
-            switch (GameElements.currentState)
+            if (GameElements.player.EscapeIsPressed) // Spelaren har tryckt Escape in-game
             {
-                case GameElements.State.Run: // Kör själva spelet
-                    GameElements.RunDraw(spriteBatch, gameTime);
-                    break;
+                
 
-                case GameElements.State.HighScore: // HighScore-listan
-                    GameElements.HighScoreDraw(spriteBatch);
-                    break;
+                GameElements.printText.Print("Are you sure you want to quit?", spriteBatch, 280, 200);
+                GameElements.printText.Print("Press Y to quit or N to continue", spriteBatch, 280, 240);                
 
-                case GameElements.State.Quit: // Avsluta spelet
-                    this.Exit();
-                    break;
+            }
 
-                case GameElements.State.OnlySprite: // null-case till menybakgrunden, går ej att välja
-                    
-                    break;
 
-                default: // Tillbaka till menyn
-                    GameElements.MenuDraw(spriteBatch);
-                    break;
+            if (!GameElements.player.EscapeIsPressed)
+            {
+
+                // Rensa skärmen
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+
+                switch (GameElements.currentState)
+                {
+                    case GameElements.State.Run: // Kör själva spelet
+                        GameElements.RunDraw(spriteBatch, gameTime);
+                        break;
+
+                    case GameElements.State.HighScore: // HighScore-listan
+                        GameElements.HighScoreDraw(spriteBatch);
+                        break;
+
+                    case GameElements.State.Quit: // Avsluta spelet
+                        this.Exit();
+                        break;
+
+                    case GameElements.State.OnlySprite: // null-case till menybakgrunden, går ej att välja
+
+                        break;
+
+                    default: // Tillbaka till menyn
+                        GameElements.MenuDraw(spriteBatch);
+                        break;
+                }
+
+                
+
+                base.Draw(gameTime);
             }
 
             spriteBatch.End();
 
-            base.Draw(gameTime);
         }
     }
 }

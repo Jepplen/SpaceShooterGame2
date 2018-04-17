@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
+using SpaceShooter.Services;
 
 namespace SpaceShooter
 {
@@ -29,7 +30,7 @@ namespace SpaceShooter
         public static Player player;      
         static List<GoldCoin> goldCoins;
         static Texture2D goldCoinSprite;
-        static PrintText printText;
+        public static PrintText printText;
         static Background background;
 
         static List<EnemyTripodRed> tripodRedList;
@@ -253,12 +254,17 @@ namespace SpaceShooter
                 
             }
 
+
+
+
             return State.Run; // Stanna kvar i Run
+
+
                         
         }
     
 
-
+      
 
 
 
@@ -275,14 +281,7 @@ namespace SpaceShooter
                    
             player.Draw(spriteBatch);
 
-            if (player.EscapeIsPressed) // Spelaren är död
-            {
-
-
-                printText.Print("Are you sure you want to quit?", spriteBatch, 280, 200);
-                printText.Print("Press Y to quit or N to continue", spriteBatch, 280, 240);
-
-            }
+          
 
             // Visa hur mycket poäng spelaren har
             foreach (GoldCoin gc in goldCoins)
@@ -435,6 +434,9 @@ namespace SpaceShooter
         {
             KeyboardState keyboardState = Keyboard.GetState();
             
+            // skriv ut Highscore
+
+
             // Återgå till menyn om man trycker ESC:
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
@@ -454,6 +456,22 @@ namespace SpaceShooter
         // ===============================================================================================
         public static void HighScoreDraw(SpriteBatch spriteBatch)
         {
+
+            var highscoreService = new HighScoreService();
+            var highScores = highscoreService.GetHighScores();
+
+            int xCoord = 200;
+            int yCoord = 200;
+
+
+            foreach (var score in highScores)
+            {
+                printText.Print($"Place: {score.Placement} | Score: {score.PlayerScore} | Player: {score.PlayerInitials}", spriteBatch, xCoord, yCoord);
+                yCoord = yCoord + 20;
+            }
+            
+
+
             // Rita ut HighScore-listan (Saknar vägledning i läroboken)
         }
 
@@ -482,9 +500,7 @@ namespace SpaceShooter
 
 
         }
-
-
-        
+            
 
 
 
@@ -595,8 +611,8 @@ namespace SpaceShooter
         // ==================================================================================================================
 
         public static void CheckCollision(GameTime gameTime, GameWindow window, ContentManager content)
-        {
-
+        {         
+           
 
             // Gå igenom hela listan med existerande PowerUpWeaponLaser
             foreach (PowerUpWeaponLaser puwl in powerUpList.ToList())
@@ -738,6 +754,9 @@ namespace SpaceShooter
                     tripodGreenList.Remove(etg);
                 }
             }
+
+          
+
 
             // Gå igenom alla fiender för att se om spelaren har kolliderat med bullets
             foreach (EnemyTripodGreen etg in tripodGreenList.ToList())
