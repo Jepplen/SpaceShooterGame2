@@ -83,6 +83,8 @@ namespace SpaceShooter
 
         protected bool isDestroyed = false;
 
+        protected bool escapeIsPressed = false;
+
         // =======================================================================
         // PhysicalObject(), konstruktor för att skapa spelar-objekt
         // =======================================================================
@@ -110,6 +112,8 @@ namespace SpaceShooter
         public int IsDamaged { get { return isDamaged; } set { isDamaged = value; } }
 
         public bool IsDestroyed { get { return isDestroyed; } set { isDestroyed = value; } }
+
+        public bool EscapeIsPressed { get { return escapeIsPressed; } set { escapeIsPressed = value; } }
 
     }
 

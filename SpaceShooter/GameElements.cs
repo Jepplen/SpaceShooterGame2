@@ -26,7 +26,7 @@ namespace SpaceShooter
         public static bool gameCanStart = true;
 
        
-        static Player player;      
+        public static Player player;      
         static List<GoldCoin> goldCoins;
         static Texture2D goldCoinSprite;
         static PrintText printText;
@@ -222,11 +222,27 @@ namespace SpaceShooter
             GenerateBossJarJar(window, content, gameTime, 130000, 131000);            
 
             CheckCollision(gameTime, window, content);
-           
 
 
 
 
+            if (player.EscapeIsPressed) // Spelaren har tryckt Escape in-game
+            {
+
+                KeyboardState keyboardState = Keyboard.GetState();
+
+                if (keyboardState.IsKeyDown(Keys.Y))
+                {
+                    gameCanStart = true;
+                    Reset(window, content, gameTime); // Återställ alla spelobjekt
+                    return State.Menu; // Återgå till menyn
+                }
+                else if (keyboardState.IsKeyDown(Keys.N))
+                {
+                    player.EscapeIsPressed = false;
+                }
+                
+            }
 
 
             if (!player.IsAlive) // Spelaren är död
@@ -253,11 +269,21 @@ namespace SpaceShooter
         public static void RunDraw(SpriteBatch spriteBatch, GameTime gameTime)
         {
 
+           
+
             background.Draw(spriteBatch);
                    
             player.Draw(spriteBatch);
 
-                   
+            if (player.EscapeIsPressed) // Spelaren är död
+            {
+
+
+                printText.Print("Are you sure you want to quit?", spriteBatch, 280, 200);
+                printText.Print("Press Y to quit or N to continue", spriteBatch, 280, 240);
+
+            }
+
             // Visa hur mycket poäng spelaren har
             foreach (GoldCoin gc in goldCoins)
             {

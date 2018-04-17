@@ -30,8 +30,15 @@ namespace SpaceShooter
         // ============================================================================================
         public void Update(GameWindow window, int nrBackgroundsY)
         {
-            vector.Y += 2f; // Flytta bakgrunden
 
+            if (GameElements.player.EscapeIsPressed) // Spelaren har tryckt Escape in-game
+            {
+                vector.Y += 0; // Flytta bakgrunden
+            }
+            else
+            {
+                vector.Y += 2f; // Flytta bakgrunden
+            }
             // Kontrollera om bakgrunden har åkt ut i nedkant:
             if (vector.Y > window.ClientBounds.Height)
             {
@@ -110,6 +117,23 @@ namespace SpaceShooter
         // ============================================================================================
         public void Draw(SpriteBatch spriteBatch)
         {
+
+            //if (GameElements.player.EscapeIsPressed)
+            //{
+            //    spriteBatch.Draw(menu[i].Texture, menu[i].Position, Color.RosyBrown);
+
+
+            //    for (int i = 0; i < nrBackgroundsX; i++)
+            //    {
+            //        for (int j = 0; j < nrBackgroundsY; j++)
+            //        {
+            //            background[i, j].Draw(spriteBatch);
+            //        }
+            //    }
+
+            //}
+
+
             for (int i = 0; i < nrBackgroundsX; i++)
             {
                 for (int j = 0; j < nrBackgroundsY; j++)

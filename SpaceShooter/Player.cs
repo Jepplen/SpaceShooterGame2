@@ -76,7 +76,10 @@ namespace SpaceShooter
 
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
-                isAlive = false;
+                //isAlive = false;
+
+                escapeIsPressed = true;
+
             }
 
                 // Flytta rymdskeppet efter tangenttryckningar (om det inte är på väg ut från kanten):
@@ -190,6 +193,7 @@ namespace SpaceShooter
 
             // Gör så att spelaren lever igen:
             isAlive = true;
+            escapeIsPressed = false;
 
         }
 
