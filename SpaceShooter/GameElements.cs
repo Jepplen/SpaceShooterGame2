@@ -450,8 +450,10 @@ namespace SpaceShooter
             enemyBossList.Clear();
             mineList.Clear();
             powerUpList.Clear();
+            goldCoins.Clear();
 
-            
+
+
 
         }
 
@@ -984,7 +986,7 @@ namespace SpaceShooter
                     int rndX = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
                     int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
 
-                    // Lägg till guldmyntet i listan GoldCoins
+                    // Lägg till guldmyntet i listan goldCoins
                     goldCoins.Add(new GoldCoin(goldCoinSprite, rndX, rndY, gameTime));
                 }
 
