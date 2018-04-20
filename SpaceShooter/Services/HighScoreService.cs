@@ -7,53 +7,68 @@ using System.Threading.Tasks;
 
 namespace SpaceShooter.Services
 {
-    public class HighScoreService
+
+    // Klass som hanterar High Score
+    public static class HighScoreService
     {
-        public void SetHighScore(Highscore highScores)
-        {
-            var fileHandlerService = new FileHandlerService();
+        public static void SetHighScore(int score)
+        {            
             var currentHighScores = GetHighScores();
+
 
             // kolla om det är ett highscore som ska in på listan
 
             bool isNewHighscore = false;
 
-            foreach (var score in currentHighScores)
+            foreach (var highScore in currentHighScores)
             {
-                if(score.PlayerScore < highScores.PlayerScore)
+                if(highScore.PlayerScore < score)
                 {
                     isNewHighscore = true;
                 }
             }
 
+            // Om nytt High Score ska det in i listan
             if (isNewHighscore)
             {
                 currentHighScores.Reverse();
-                currentHighScores[0]= highScores;
-            
+                currentHighScores[0] = new Highscore {
+                    Placement = 0,
+                    PlayerInitials = "",
+                    PlayerScore = score
+                };
 
                 // uppdatera om något highscore är slaget i listan av highscores
-
-
-                var newHighscoreArray = new string[10];
-                int counter = 0;
-
-                // göra om till en string array
-                foreach (var score in currentHighScores)
-                {
-                    newHighscoreArray[counter] = $"{score.PlayerInitials}|{score.PlayerScore}";
-                    //newHighscoreArray[counter] = score.PlayerInitials + "|" + score.PlayerScore;
-                    counter++;
-                }           
-
-                //  Spara nya highscore arrayen
-                fileHandlerService.WriteToFile(newHighscoreArray);
+                SaveHighscores(currentHighScores);
 
             }
 
         }
 
-        public List<Highscore> GetHighScores()
+        // Spara High Score
+        private static void SaveHighscores(List<Highscore> highScores)
+        {
+            var fileHandlerService = new FileHandlerService();
+            var newHighscoreArray = new string[1];
+            int counter = 0;
+
+            // göra om till en string array
+            foreach (var highScore in highScores)
+            {
+                newHighscoreArray[counter] = $"{highScore.PlayerScore.ToString()}";
+                //newHighscoreArray[counter] = score.PlayerInitials + "|" + score.PlayerScore;
+                counter++;
+            }
+
+            // clear previous highscores
+            fileHandlerService.ClearFile();
+
+            //  Spara nya highscore arrayen
+            fileHandlerService.WriteToFile(newHighscoreArray);
+        }
+
+        // Erhåll High Score
+        public static List<Highscore> GetHighScores()
         {
             var fileHandlerService = new FileHandlerService();
             var highscores = fileHandlerService.ReadFileLines();
@@ -62,12 +77,12 @@ namespace SpaceShooter.Services
 
             foreach (var line in highscores)
             {
-                var splitLine = line.Split('|');
+                //var splitLine = line.Split('|');
                 var highscore = new Highscore();
 
                 var score = 0;
 
-                var success = int.TryParse(splitLine[0], out score);
+                var success = int.TryParse(line, out score);
 
                 if(success == true)
                 {
@@ -78,9 +93,9 @@ namespace SpaceShooter.Services
                     highscore.PlayerScore = 0;
                 }
 
-                highscore.PlayerInitials = splitLine[1];
+                //highscore.PlayerInitials = splitLine[1];
 
-                highscore.Placement = 0;
+                //highscore.Placement = 0;
 
                 highScoreList.Add(highscore);
             }
@@ -91,20 +106,20 @@ namespace SpaceShooter.Services
             return highScoreList;
         }
 
-        private List<Highscore> SortHighscore(List<Highscore> highScore)
+        private static List<Highscore> SortHighscore(List<Highscore> highScore)
         {
             // 1: sortera fallande på poängen            
             
             highScore = highScore.OrderByDescending(score => score.PlayerScore).ToList();
 
             // 2: Sätt placering på highscore
-            int placement = 1;
+            //int placement = 1;
 
-            foreach (var score in highScore)
-            {
-                score.Placement = placement;
-                placement++;
-            }
+            //foreach (var score in highScore)
+            //{
+            //    score.Placement = placement;
+            //    placement++;
+            //}
            
 
 

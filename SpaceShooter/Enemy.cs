@@ -108,7 +108,7 @@ namespace SpaceShooter
     // EnemyTripodGreen, fiende
     class EnemyTripodGreen : PhysicalObject
     {
-        double timeForTripodGreenToDie; // Hur länge Tripod lever kvar i spelet
+        //double timeForTripodGreenToDie; // Hur länge Tripod lever kvar i spelet
         int tripodEnemyDamage = 0;
 
         // ===========================================================
@@ -116,7 +116,7 @@ namespace SpaceShooter
         // ===========================================================
         public EnemyTripodGreen(Texture2D texture, float X, float Y, GameTime gameTime) : base(texture, X, Y, 0f, 4f)
         {
-            timeForTripodGreenToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+            //timeForTripodGreenToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;
 
         }
 
@@ -135,10 +135,10 @@ namespace SpaceShooter
                 isAlive = false;
             }
             // Döda Tripoden:en om det är för gammalt
-            if (timeForTripodGreenToDie < gameTime.TotalGameTime.TotalMilliseconds)
-            {
-                isAlive = false;
-            }
+            //if (timeForTripodGreenToDie < gameTime.TotalGameTime.TotalMilliseconds)
+            //{
+            //    isAlive = false;
+            //}
 
             if (tripodEnemyDamage == 1)
             {
@@ -151,7 +151,7 @@ namespace SpaceShooter
     // EnemyTripodRed, fiende
     class EnemyTripodRed : PhysicalObject
     {
-        double timeForTripodRedToDie; // Hur länge Tripod lever kvar i spelet
+        
         int tripodEnemyDamage = 0;
 
         // ===========================================================
@@ -159,7 +159,7 @@ namespace SpaceShooter
         // ===========================================================
         public EnemyTripodRed(Texture2D texture, float X, float Y, GameTime gameTime) : base(texture, X, Y, 0f, 3f)
         {
-            timeForTripodRedToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+            //timeForTripodRedToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;
 
         }
 
@@ -181,10 +181,10 @@ namespace SpaceShooter
                 isAlive = false;
             }
             // Döda Tripoden:en om det är för gammalt
-            if (timeForTripodRedToDie < gameTime.TotalGameTime.TotalMilliseconds)
-            {
-                isAlive = false;
-            }
+            //if (timeForTripodRedToDie < gameTime.TotalGameTime.TotalMilliseconds)
+            //{
+            //    isAlive = false;
+            //}
 
             if (tripodEnemyDamage == 1)
             {
@@ -196,14 +196,14 @@ namespace SpaceShooter
     // MineEnemy, fiende
     class MineEnemy : PhysicalObject
     {
-        double timeForMineToDie; // Hur länge Tripod lever kvar i spelet
+        //double timeForMineToDie; // Hur länge Tripod lever kvar i spelet
 
         // ===========================================================
         // TripodEnemy(), konstruktor för att skapa objektet
         // ===========================================================
         public MineEnemy(Texture2D texture, float X, float Y, GameTime gameTime, GameWindow window) : base(texture, X, Y, 5f, 1f)
         {
-            timeForMineToDie = gameTime.TotalGameTime.TotalMilliseconds + 15000;
+            //timeForMineToDie = gameTime.TotalGameTime.TotalMilliseconds + 15000;
         }
 
         // ===========================================================
@@ -249,24 +249,29 @@ namespace SpaceShooter
                 }
             }
 
-         
-            // Döda Tripoden:en om det är för gammalt
-            if (timeForMineToDie < gameTime.TotalGameTime.TotalMilliseconds)
+            //// Gör fienden inaktiv om den åker ut nedanför skärmen
+            if (vector.Y > window.ClientBounds.Height)
             {
                 isAlive = false;
             }
+
+            // Döda Tripoden:en om det är för gammalt
+            //if (timeForMineToDie < gameTime.TotalGameTime.TotalMilliseconds)
+            //{
+            //    isAlive = false;
+            //}
         }
     }
 
 
-    class EnemyBossJarJar : PhysicalObject
+    class EnemyBossRedReaper : PhysicalObject
     {
         
 
         // ===========================================================
-        //EnemyBossJarJar(), konstruktor för att skapa objektet
+        //EnemyBossRedReaper(), konstruktor för att skapa objektet
         // ===========================================================
-        public EnemyBossJarJar(Texture2D texture, float X, float Y, GameTime gameTime, GameWindow window) : base(texture, X, Y, 3f, 1f)
+        public EnemyBossRedReaper(Texture2D texture, float X, float Y, GameTime gameTime, GameWindow window) : base(texture, X, Y, 3f, 1f)
         {           
         }
 

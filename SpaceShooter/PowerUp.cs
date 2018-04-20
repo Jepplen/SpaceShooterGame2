@@ -14,13 +14,14 @@ namespace SpaceShooter
     class GoldCoin : PhysicalObject
     {
         double timeToDie; // Hur länge guldmyntet lever kvar
+        
 
         // ===========================================================
         // GoldCoin(), konstruktor för att skapa objektet
         // ===========================================================
         public GoldCoin(Texture2D texture, float X, float Y, GameTime gameTime) : base(texture, X, Y, 0, 2f)
         {
-            timeToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+            timeToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;         
         }
 
         // ===========================================================
@@ -28,6 +29,7 @@ namespace SpaceShooter
         // ===========================================================
         public void Update(GameTime gameTime)
         {
+                      
             // Döda guldmyntet om det är för gammalt
             if (timeToDie < gameTime.TotalGameTime.TotalMilliseconds)
             {
@@ -65,14 +67,13 @@ namespace SpaceShooter
 
     class PowerUpWeaponLaser : PhysicalObject
     {
-        double timeForLaserToDie; // Hur länge Vapenuppgraderingen lever kvar i spelet
+        
 
         // ===========================================================
         // PowerUpWeaponLaser(), konstruktor för att skapa objektet
         // ===========================================================
         public PowerUpWeaponLaser(Texture2D texture, float X, float Y, GameTime gameTime, GameWindow window) : base(texture, X, Y, 0f, 2f)
         {
-            timeForLaserToDie = gameTime.TotalGameTime.TotalMilliseconds + 30000;
         }
 
         // ===========================================================
@@ -83,14 +84,12 @@ namespace SpaceShooter
 
             // Flytta på fienden:
             vector.Y += speed.Y;
-            
 
-
-    
-            if (timeForLaserToDie < gameTime.TotalGameTime.TotalMilliseconds)
+            //// Gör fienden inaktiv om den åker ut nedanför skärmen
+            if (vector.Y > window.ClientBounds.Height)
             {
                 isAlive = false;
-            }
+            } 
         }
     }
 }

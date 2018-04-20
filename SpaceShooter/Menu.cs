@@ -29,7 +29,9 @@ namespace SpaceShooter
         // Det state som representerar själva menyn
         int defaultMenuState;
 
-       
+        int menuUpdateRate = Settings.MenuUpdateRate;
+
+
 
 
 
@@ -90,7 +92,7 @@ namespace SpaceShooter
             // Först måste vi dock kontrollera så användaren inte precis nyligen bytte menyval.
             // Vi vill ju inte att det ska ändras 30 eller 60 gånger per sekund!
             // Därför pausar vi i 130 millisekunder:
-            if (lastChange + 150 < gameTime.TotalGameTime.TotalMilliseconds)
+            if (lastChange + menuUpdateRate < gameTime.TotalGameTime.TotalMilliseconds)
             {
                 // Gå ett steg ned i menyn
                 if (keyboardState.IsKeyDown(Keys.Down))

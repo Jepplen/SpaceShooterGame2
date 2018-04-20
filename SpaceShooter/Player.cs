@@ -24,6 +24,7 @@ namespace SpaceShooter
 
 
         public static int rateOfFire = Settings.RateOfFire;
+        public static int laserUpgradeRateOfFire = Settings.LaserUpgradeRateOfFire;
 
         public List<Bullet> Bullets { get { return bullets; } }
 
@@ -34,7 +35,7 @@ namespace SpaceShooter
 
         
 
-        static int points = 0;
+        public static int points = 0;
 
         // ===================================================
         // Player(), konstruktor för att skapa spelarobjekt
@@ -63,7 +64,7 @@ namespace SpaceShooter
 
 
 
-            // RATE OF FIRE SET TO DEFAULT
+            // Ställer Rate of Fire till Default värdet från settings.cs
             if (gameTime.TotalGameTime.TotalMilliseconds > GameElements.spawnTimeReference && gameTime.TotalGameTime.TotalMilliseconds < GameElements.spawnTimeReference + 1000)
             {
                 rateOfFire = Settings.RateOfFire;
@@ -75,8 +76,7 @@ namespace SpaceShooter
             }
 
             if (keyboardState.IsKeyDown(Keys.Escape))
-            {
-                //isAlive = false;
+            {                
 
                 escapeIsPressed = true;
 
@@ -223,8 +223,5 @@ namespace SpaceShooter
             }
 
         }
-
-
-
     }
 }

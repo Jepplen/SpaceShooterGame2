@@ -24,9 +24,12 @@ namespace SpaceShooter
         
         static Menu menu;
 
+        public static bool gameOver = false;
         public static bool gameCanStart = true;
 
-       
+
+        public static int playerScoreAchieved;
+
         public static Player player;      
         static List<GoldCoin> goldCoins;
         static Texture2D goldCoinSprite;
@@ -39,8 +42,8 @@ namespace SpaceShooter
         static List<PowerUpWeaponLaser> powerUpList;
         static bool newPowerUpWeaponLaser = true;
 
-        static List<EnemyBossJarJar> enemyBossList;
-        static bool newBossJarJar = true;
+        static List<EnemyBossRedReaper> enemyBossList;
+        static bool newBossRedReaper = true;
 
         static List<CrashAnimation> crashAnimationList;
         static Texture2D crashSprite;
@@ -48,9 +51,9 @@ namespace SpaceShooter
         static Texture2D powerUpWeaponLaserSprite;
         static Texture2D tripodSpriteGreen;
         static Texture2D tripodSpriteRed;
-        static Texture2D enemyBossSpriteJarJar;
+        static Texture2D enemyBossSpriteRedReaper;
 
-        static bool jarJarIsDead = false;
+        static bool redReaperIsDead = false;
 
 
         static List<MineEnemy> mineList;
@@ -66,8 +69,6 @@ namespace SpaceShooter
         public static double deathSpriteTimereference;
 
 
-
-
         // =================================================================================================================
         // Initialize(), anropas då spelet startar.
         // Här ligger all kod för att initiera objekt och skapa dem, dock inte laddning av olika filer (bilder, ljud mm...)
@@ -78,7 +79,7 @@ namespace SpaceShooter
 
             tripodGreenList = new List<EnemyTripodGreen>();
             tripodRedList = new List<EnemyTripodRed>();
-            enemyBossList = new List<EnemyBossJarJar>();
+            enemyBossList = new List<EnemyBossRedReaper>();
             powerUpList = new List<PowerUpWeaponLaser>();
             crashAnimationList = new List<CrashAnimation>();
             mineList = new List<MineEnemy>();
@@ -132,8 +133,8 @@ namespace SpaceShooter
             // Laddar EnemyTripodRed sprite
             tripodSpriteRed = content.Load<Texture2D>("images/enemies/tripodred");
 
-            // Laddar enemyBossJarJar sprite
-            enemyBossSpriteJarJar = content.Load<Texture2D>("images/enemies/boss_jarjar");
+            // Laddar enemyBossRedReaper sprite
+            enemyBossSpriteRedReaper = content.Load<Texture2D>("images/enemies/boss_redreaper");
 
             // Laddar guldmynt sprite
             goldCoinSprite = content.Load<Texture2D>("images/powerups/coinmika");
@@ -187,7 +188,8 @@ namespace SpaceShooter
             // Stänger av spelet om man trycker på back-knappen på gamepaden
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
-            
+
+        
 
             if (gameCanStart == true)
             {
@@ -201,7 +203,7 @@ namespace SpaceShooter
             player.Update(window, gameTime);        
             
             
-            // Tillägg av fiender
+            // Tillägg av fiender och uppgraderingar
             GenerateTripodsGreen(window, content, gameTime, 50, 9000, 17000);
             GenerateGoldCoins(window, content, gameTime, 400, 15000, 20000);
             GenerateTripodsGreen(window, content, gameTime, 45, 19000, 23000);
@@ -212,19 +214,17 @@ namespace SpaceShooter
             GenerateMines(window, content, gameTime, 50, 38000, 44000);
             GenerateTripodsGreen(window, content, gameTime, 50, 42000, 58000);
             GenerateMines(window, content, gameTime, 50, 54000, 58000);
-
             GeneratePowerUpWeaponLaser(window, content, gameTime, 62000, 63000);
-
             GenerateTripodsRed(window, content, gameTime, 25, 70000, 116000);
             GenerateMines(window, content, gameTime, 25, 80000, 90000);
             GenerateTripodsGreen(window, content, gameTime, 25, 85000, 116000);
             GenerateMines(window, content, gameTime, 15, 90000, 116000);
+            GenerateBossRedReaper(window, content, gameTime, 130000, 131000);            
 
-            GenerateBossJarJar(window, content, gameTime, 130000, 131000);            
 
+            // Gå igenom alla listor och leta efter kollisioner
             CheckCollision(gameTime, window, content);
-
-
+                       
 
 
             if (player.EscapeIsPressed) // Spelaren har tryckt Escape in-game
@@ -248,10 +248,23 @@ namespace SpaceShooter
 
             if (!player.IsAlive) // Spelaren är död
             {
-                gameCanStart = true;
-                Reset(window, content, gameTime); // Återställ alla spelobjekt
-                return State.Menu; // Återgå till menyn
-                
+
+                gameOver = true;
+                KeyboardState keyboardState = Keyboard.GetState();
+
+                if (keyboardState.IsKeyDown(Keys.Escape))
+                {
+                    if (gameOver)
+                    {
+                        gameOver = false;                        
+                        playerScoreAchieved = Player.points;
+                        HighScoreService.SetHighScore(playerScoreAchieved);
+                        gameCanStart = true;
+                        Reset(window, content, gameTime); // Återställ alla spelobjekt
+                        return State.Menu; // Återgå till menyn
+
+                    }
+                }
             }
 
 
@@ -310,7 +323,7 @@ namespace SpaceShooter
                 me.Draw(spriteBatch);
             }
 
-            foreach (EnemyBossJarJar ebjj in enemyBossList)
+            foreach (EnemyBossRedReaper ebjj in enemyBossList)
             {
                 ebjj.Draw(spriteBatch);
             }
@@ -321,6 +334,10 @@ namespace SpaceShooter
             }
 
             printText.Print("Points: " + player.Points, spriteBatch, 0, 0);
+
+            //===================================================================================
+            // In-Game texter
+            //===================================================================================
 
             // Spelstart Get Ready!
             if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + 3000 && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + 6000)
@@ -386,7 +403,7 @@ namespace SpaceShooter
             // Boss Fight
             if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + 125000 && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + 128000)
             {
-                printText.Print("Oh no! You have awakened him!", spriteBatch, 280, 200);
+                printText.Print("Oh no! You have awakened the Red Reaper!", spriteBatch, 210, 200);
             }
     
             // Get Ready!
@@ -407,20 +424,27 @@ namespace SpaceShooter
                 printText.Print("Get Ready!", spriteBatch, 360, 200);
             }
 
+           // Om bossen är död och spelet är färdigt, skicka spåelarpoöngen till High Score hanteraren och se om det är ett High Score
 
-
-            if (jarJarIsDead == true && gameTime.TotalGameTime.TotalMilliseconds > deathSpriteTimereference + 1000 && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 5000)
+         
+            if (redReaperIsDead == true && gameTime.TotalGameTime.TotalMilliseconds > deathSpriteTimereference + 1000 && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 5000)
             {
                 printText.Print("Very good job, Congratulations!", spriteBatch, 300, 200);
             }
 
-            if (jarJarIsDead == true && gameTime.TotalGameTime.TotalMilliseconds > deathSpriteTimereference + 7000)
+            if (redReaperIsDead == true && gameTime.TotalGameTime.TotalMilliseconds > deathSpriteTimereference + 7000 && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 14000)
             {
-                printText.Print("Press ESCAPE to exit", spriteBatch, 200, 200);
+                printText.Print("Press ESCAPE to exit", spriteBatch, 150, 200);
             }
 
+            // Om bossen är död och spelet är färdigt, skicka spåelarpoöngen till High Score hanteraren och se om det är ett High Score
+            if (redReaperIsDead == true)
+            {
+                playerScoreAchieved = Player.points;
+                HighScoreService.SetHighScore(playerScoreAchieved);
 
-           
+            }
+
         }
 
 
@@ -456,18 +480,19 @@ namespace SpaceShooter
         // ===============================================================================================
         public static void HighScoreDraw(SpriteBatch spriteBatch)
         {
+            var highScores = HighScoreService.GetHighScores();
 
-            var highscoreService = new HighScoreService();
-            var highScores = highscoreService.GetHighScores();
-
-            int xCoord = 200;
+            int xCoord = 385;
             int yCoord = 200;
 
+            printText.Print("HIGH SCORE", spriteBatch, 350, 150);
 
             foreach (var score in highScores)
             {
-                printText.Print($"Place: {score.Placement} | Score: {score.PlayerScore} | Player: {score.PlayerInitials}", spriteBatch, xCoord, yCoord);
-                yCoord = yCoord + 20;
+                printText.Print($"{score.PlayerScore}", spriteBatch, xCoord, yCoord);                
+
+                //printText.Print($"Place: {score.Placement} | Score: {score.PlayerScore} | Player: {score.PlayerInitials}", spriteBatch, xCoord, yCoord);
+                //yCoord = yCoord + 20;
             }
             
 
@@ -487,7 +512,8 @@ namespace SpaceShooter
         {
             player.Reset(380, 400, 2.5f, -4.5f); // Reset player position på skärmen
 
-           // Tömmer samtliga listor
+            // Tömmer samtliga listor och återställer bossen
+            redReaperIsDead = false;
             crashAnimationList.Clear();
             tripodRedList.Clear();
             tripodGreenList.Clear();
@@ -562,24 +588,30 @@ namespace SpaceShooter
         }
 
 
-        public static void GenerateBossJarJar(GameWindow window, ContentManager content, GameTime gameTime, int existanceFromMilliseconds, int existanceToMilliseconds)
+        public static void GenerateBossRedReaper(GameWindow window, ContentManager content, GameTime gameTime, int existanceFromMilliseconds, int existanceToMilliseconds)
         {
 
-            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + existanceFromMilliseconds && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + existanceToMilliseconds)
+            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + existanceFromMilliseconds && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + existanceToMilliseconds - 500)
             {
                 
 
-                if (newBossJarJar == true) // Ok, bossen ska spawna
+                if (newBossRedReaper == true) // Ok, bossen ska spawna
                 {
                     // Var ska bossen uppstå:
-                    int rndX = random.Next(0, window.ClientBounds.Width - enemyBossSpriteJarJar.Width);
-                    int posY = 0 - enemyBossSpriteJarJar.Height;
+                    int rndX = random.Next(0, window.ClientBounds.Width - enemyBossSpriteRedReaper.Width);
+                    int posY = 0 - enemyBossSpriteRedReaper.Height;
 
                    
-                    enemyBossList.Add(new EnemyBossJarJar(enemyBossSpriteJarJar, rndX, posY, gameTime, window));
+                    enemyBossList.Add(new EnemyBossRedReaper(enemyBossSpriteRedReaper, rndX, posY, gameTime, window));
 
-                    newBossJarJar = false;
+                    newBossRedReaper = false;
                 }
+
+                
+            }
+            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + existanceToMilliseconds - 200 && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + existanceToMilliseconds)
+            {
+                newBossRedReaper = true;
             }
         }
 
@@ -587,7 +619,7 @@ namespace SpaceShooter
         public static void GeneratePowerUpWeaponLaser(GameWindow window, ContentManager content, GameTime gameTime, int existanceFromMilliseconds, int existanceToMilliseconds)
         {
 
-            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + existanceFromMilliseconds && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + existanceToMilliseconds)
+            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + existanceFromMilliseconds && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + existanceToMilliseconds - 500)
             {
 
 
@@ -602,6 +634,11 @@ namespace SpaceShooter
 
                     newPowerUpWeaponLaser = false;
                 }
+            }
+            
+            if (gameTime.TotalGameTime.TotalMilliseconds > spawnTimeReference + existanceToMilliseconds - 200 && gameTime.TotalGameTime.TotalMilliseconds < spawnTimeReference + existanceToMilliseconds)
+            {
+                newPowerUpWeaponLaser = true;
             }
         }
 
@@ -626,7 +663,7 @@ namespace SpaceShooter
                     if (puwl.CheckCollision(player))
                     {
                         powerUpList.Remove(puwl);
-                        Player.rateOfFire = 25;
+                        Player.rateOfFire = Settings.LaserUpgradeRateOfFire;
                     }
                 }
 
@@ -638,16 +675,16 @@ namespace SpaceShooter
 
             
 
-            // Gå igenom hela listan med existerande EnemyBossJarJar
-            foreach (EnemyBossJarJar ebjj in enemyBossList.ToList())
+            // Gå igenom hela listan med existerande EnemyBossRedReaper
+            foreach (EnemyBossRedReaper ebrr in enemyBossList.ToList())
             {
-                if (ebjj.IsAlive) // Kontrollera om fienden lever
+                if (ebrr.IsAlive) // Kontrollera om fienden lever
                 {
                     // gd.Update(), kollar om fienden har blivit för gammalt för att få leva vidare:
-                    ebjj.Update(gameTime, window);
+                    ebrr.Update(gameTime, window);
 
                     // Kontrollera om fienden har kolliderat med spelaren:
-                    if (ebjj.CheckCollision(player))
+                    if (ebrr.CheckCollision(player))
                     {
                         player.IsAlive = false;
                     }
@@ -655,47 +692,52 @@ namespace SpaceShooter
 
                 else // Ta bort fienden för det är dött
                 {
-                    enemyBossList.Remove(ebjj);
+                    enemyBossList.Remove(ebrr);
                 }
             }
 
             // Gå igenom alla fiender för att se om spelaren har kolliderat med bullets
-            foreach (EnemyBossJarJar ebjj in enemyBossList.ToList())
+            foreach (EnemyBossRedReaper ebrr in enemyBossList.ToList())
             {
              
                     foreach (Bullet b in player.Bullets)
                     {
 
-                        if (ebjj.CheckCollision(b)) // Kollision uppstod
+                        if (ebrr.CheckCollision(b)) // Kollision uppstod
                         {
-                            ebjj.IsDamaged++; // fienden har blivit skadad
+                            ebrr.IsDamaged++; // fienden har blivit skadad
 
                             b.IsAlive = false;
 
-                            if (ebjj.IsDamaged > 20) // Kollision uppstod
+                            if (ebrr.IsDamaged > 20) // Kollision uppstod
                             {
-                                ebjj.IsAlive = false; // Döda fiende
+                                ebrr.IsAlive = false; // Döda fiende
 
-                                ebjj.IsDestroyed = true; // Triggar death sprite
+                                ebrr.IsDestroyed = true; // Triggar death sprite
 
-                                player.Points = player.Points + 20000; // Ge spelaren poäng
+                                player.Points = player.Points + 500; // Ge spelaren poäng
 
-                                jarJarIsDead = true;
+                                redReaperIsDead = true;
 
-                                deathSpriteTimereference = gameTime.TotalGameTime.TotalMilliseconds;
+                                if(redReaperIsDead)
+                                {
+                                    deathSpriteTimereference = gameTime.TotalGameTime.TotalMilliseconds;
+                                }
+
+                                
 
                             }
                         }
 
-                        if (ebjj.IsDestroyed == true && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 200)
+                        if (ebrr.IsDestroyed == true && gameTime.TotalGameTime.TotalMilliseconds < deathSpriteTimereference + 200)
                         {
                             bool newCrashSite = true;
 
                             if (newCrashSite == true) // Ok, ny krasch ska uppstå
                             {
                                 // Var ska den uppstå
-                                float posX = ebjj.X;
-                                float posY = ebjj.Y;
+                                float posX = ebrr.X;
+                                float posY = ebrr.Y;
 
                                 // Lägg till i listan
                                 crashAnimationList.Add(new CrashAnimation(crashSprite, posX, posY, gameTime));

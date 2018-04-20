@@ -22,6 +22,12 @@ namespace SpaceShooter
         GraphicsDeviceManager graphics; // Används för grafik
         SpriteBatch spriteBatch; // Används för att rita bilder       
 
+  
+        public static double spawnTimeReferenceSavedTimeFromPause;
+        public static double gameTimeReferenceSavedTimeFromPause;
+        public static double gameTimeReferenceSavedTimeFromPauseDifference;
+        bool gamePause = true;
+        
 
         // ===============================================================================================
         // Game1(), klassens konstruktor
@@ -93,7 +99,7 @@ namespace SpaceShooter
         protected override void Update(GameTime gameTime)
         {
 
-
+            
 
 
             //// Stänger av spelet om man trycker på back-knappen på gamepaden:
@@ -105,9 +111,30 @@ namespace SpaceShooter
             //}
 
 
+            // OM spelaren har dött måst den trycka escape för att komma till menyn
+            if (GameElements.gameOver) // Spelaren är död
+            {
+                KeyboardState keyboardState = Keyboard.GetState();
 
+                if (keyboardState.IsKeyDown(Keys.Escape))
+                {
+                    GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
+                }
+            }
+
+            // Om spelaren har tryckt Escape in-game så pausar hela spelet
             if (GameElements.player.EscapeIsPressed) // Spelaren har tryckt Escape in-game
             {
+
+                if (gamePause)
+                {
+                    gameTimeReferenceSavedTimeFromPause = gameTime.TotalGameTime.TotalMilliseconds; // Sparar game time
+                    spawnTimeReferenceSavedTimeFromPause = GameElements.spawnTimeReference; // Sparar Spawntimereference
+                    gameTimeReferenceSavedTimeFromPauseDifference = gameTime.TotalGameTime.TotalMilliseconds - GameElements.spawnTimeReference; // Sparar hur långt tid har gått i spelet
+                    GameElements.spawnTimeReference = GameElements.spawnTimeReference + 200000; // Ställer Spawntimereference tillen tid som aldrig kan trigga något i spelet
+                    gamePause = false;
+                }
+               
 
                 KeyboardState keyboardState = Keyboard.GetState();
 
@@ -117,11 +144,14 @@ namespace SpaceShooter
                 }
                 else if (keyboardState.IsKeyDown(Keys.N))
                 {
+                    GameElements.spawnTimeReference = gameTime.TotalGameTime.TotalMilliseconds - gameTimeReferenceSavedTimeFromPauseDifference; // Återställer Spawntimereferernce till när spelaren först tryckte på escape
                     GameElements.player.EscapeIsPressed = false;
+                    gamePause = true;
+                    
                 }
+                
 
-            }
-
+            }                      
 
 
             if (!GameElements.player.EscapeIsPressed)
@@ -179,17 +209,24 @@ namespace SpaceShooter
             {
                 
 
-                GameElements.printText.Print("Are you sure you want to quit?", spriteBatch, 280, 200);
-                GameElements.printText.Print("Press Y to quit or N to continue", spriteBatch, 280, 240);                
+                GameElements.printText.Print("Are you sure you want to quit?", spriteBatch, 280, 220);
+                GameElements.printText.Print("Press Y to quit or N to continue", spriteBatch, 280, 260);                
 
             }
 
 
-            if (!GameElements.player.EscapeIsPressed)
+            if (GameElements.gameOver) // Spelaren är död
+            {
+                GameElements.printText.Print("Game Over", spriteBatch, 350, 220);
+                GameElements.printText.Print("Press Escape to exit", spriteBatch, 315, 260);
+            }
+          
+
+            if (!GameElements.player.EscapeIsPressed && GameElements.gameOver == false)
             {
 
                 // Rensa skärmen
-                GraphicsDevice.Clear(Color.CornflowerBlue);
+                GraphicsDevice.Clear(Color.Black);
 
                 switch (GameElements.currentState)
                 {

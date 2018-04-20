@@ -9,7 +9,8 @@ namespace SpaceShooter
     public static class Settings
     {
         public static int RateOfFire { get; set; } = 400;
-        public static int MenuUpdateRate { get; set; } = 200;
+        public static int LaserUpgradeRateOfFire { get; set; } = 25;
+        public static int MenuUpdateRate { get; set; } = 100;
         public static int PlayerPointsGoldCoin { get; set; } = 10;
     }
 }

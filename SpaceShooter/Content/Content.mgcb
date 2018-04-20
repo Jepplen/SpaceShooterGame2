@@ -320,18 +320,6 @@
 /processorParam:TextureFormat=Color
 /build:images/background/backgroundspace_jeppel_small.png
 
-#begin images/enemies/boss_jarjar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/enemies/boss_jarjar.png
-
 #begin images/player/powerup_weapon_laser.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -367,4 +355,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:images/player/bulletmika2.png
+
+#begin images/enemies/boss_redreaper.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/enemies/boss_redreaper.png
 
